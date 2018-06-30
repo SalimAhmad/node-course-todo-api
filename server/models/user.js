@@ -82,6 +82,28 @@ UserSchema.statics.findByToken = function (token) {
     })
 }
 
+UserSchema.statics.findByCredentials = function (email, password) {
+    var User = this;
+
+    return User.findOne({email}).then(user => {
+        if (!user) {
+            return Promise.reject();
+        }
+
+        // bcrypt only supports callbacks (doesn't support promises) that's why we return a new promise
+        // reject will trigger the catch method we defined in server.js
+        return new Promise((resolve, reject) => {
+            bcrypt.compare(password, user.password, (err, res) => {
+                if (res) {
+                    resolve(user);
+                } else {
+                    reject(); // rejecting the promise will send 400 back because we triggered catch in server.js
+                }
+            })
+        })
+    })
+}
+
 // before we run 'save' the following should be executed
 UserSchema.pre('save', function (next) {
     var user = this;
