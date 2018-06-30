@@ -2,3 +2,4 @@ node_modules/
 npm_instructions.txt
 heroku_instructions.txt
 package-lock.json
+config.json
