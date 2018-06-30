@@ -57,6 +57,19 @@ UserSchema.methods.generateAuthToken = function () {
     });
 };
 
+UserSchema.methods.removeToken = function (token) {
+    var user = this;
+
+    return user.update({
+        // $pull is a mongodb operator that removes items from array that match certain criteria
+        $pull: { // pull any object in the array that has a token property equal to the token passed in this function
+            tokens: {
+                token: token
+            }
+        }
+    })
+}
+
 // statics: the methods defined on the Model i.e. upper case User
 // a model (using statics) have access to all documents (users)
 
