@@ -1,6 +1,7 @@
 var {User} = require('./../models/user');
 
-// middleware function used on routes to make them private
+// middleware function used on routes to make them private (only logged in user can access them)
+// authenticate has access to the user and the token
 var authenticate = (req, res, next) => {
     var token = req.header('x-auth'); // to get value from header with key x-auth
 
